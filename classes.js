@@ -111,36 +111,36 @@ class ProgressiveManager extends Manager {
     this.bonus = 0
     this.reports = []
   }
-  
-  hire(employee) {
-    console.log(this.reports.length)
-    this.reports.push(employee)
-    if(this.reports.length === 0){
-      console.log(this.reports.length, 'nam')
-      this.title = 'Not a manager'
+  updateTitle(){
+    let repNum = this.reports.length
+    if(repNum === 0){
     }
-    else if(this.reports.length > 0 && this.reports.length <= 3){
-      console.log(this.reports.length, 'bm')
+    else if(repNum > 0 && repNum <= 3){
       this.title = 'Barely Manager'
     }
-    else if(this.reports.length >= 4 && this.reports.length <= 10){
-      console.log(this.reports.length, 'mm')
+    else if(repNum >= 4 && repNum <= 10){
       this.title = 'Mostly Manager'
     }
-    else if(this.reports.length >= 11  && this.reports.length <= 50){
+    else if(repNum >= 11  && repNum <= 50){
       this.title = 'Manager'
     }
-    else if(this.reports.length >=51  && this.reports.length <= 100){
+    else if(repNum >= 51  && repNum <= 100){
       this.title = 'Manager Plus'
     }
-    else if(this.reports.length > 101){
+    else if(repNum > 101){
       this.title = 'Bestest Manager'
     }
     return this.reports
   }
-  fire(index) {
-    this.reports.splice(index, 1)
+  hire() {
+    super.hire()
+    changeTitle()
+  }
+
+  fire() {
+    super.fire()
     this.bonus += 100
+    changeTitle()
   }
 }
 
@@ -178,7 +178,7 @@ class Machine {
 
   }
   makeWidgets(num) {
-    this.widgets_made_count += num
+    this.widgets_made_count += num;
     num /= 50
     this.wear_and_tear_count += num
   }
@@ -186,16 +186,11 @@ class Machine {
     this.needs_reboot = true
   }
   reboot() {
-    if(this.needs_reboot){
-        this.needs_reboot = false
+    return () => {
+      this.wear_and_tear_count -= 10
+      this.needs_reboot = false
     }
-    
   }
 }
-let machine = new Machine()
-machine.makeWidgets(10029)
-machine.fixMachine()
-console.log(machine)
-console.log(machine.reboot())
-console.log(machine)
+
 
