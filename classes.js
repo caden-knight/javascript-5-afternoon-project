@@ -30,7 +30,18 @@
 */
 
 //Code Here
+class Employee {
+  constructor(first_name, last_name, email, age) {
+    this.first_name = first_name
+    this.last_name = last_name
+    this.email = email
+    this.age = age
+  }
+  makeWidget() {
+    return `${this.first_name} ${this.last_name} Widget`
+  }
 
+}
 
 ////////// PROBLEM 2 //////////
 
@@ -39,7 +50,7 @@
   Each manager has all of the same properties as an employee with the following additional properties:
     - reports (other employees) that defaults to an empty array
   Each manager has the following additional methods:
-    - hire (employee)
+    - hireBonus (employee)
       - Accepts a new employee as a parameter and pushes it to their list of reports.
     - fire (index)
       - Fire removes employees from their list of reports at the given index
@@ -48,8 +59,29 @@
 */
 
 //Code Here
+class Manager extends Employee {
+  constructor(first_name, last_name, email, age) {
+    super(first_name, last_name, email, age)
+    this.reports = []
+  }
+  hire(employee) {
+    this.reports.push(employee)
 
+    return this.reports
+  }
+  fire(index) {
+    this.reports.splice(index, 1)
+  }
+}
 
+let caden = new Manager('caden', 'morrison', 'caden@mail.com', 22)
+let bob = new Employee('bob', 'joe', 'bob@mail.com', 43)
+let billy = new Employee("billy", 'bob-joe', 'billy@mail.com', 27)
+caden.hire(bob)
+caden.hire(billy)
+caden.fire()
+
+//console.log(caden.reports)
 ////////// PROBLEM 3 //////////
 
 /*
@@ -58,7 +90,7 @@
     - title - default 'Not a manager'
     - bonus - default 0
 
-  When employees are hired or fired, the manager's title should be updated based on the number of reports.
+  When employees are hired or fired, the manager's title should be updated based on the number of reports. 
     0 reports : Not a manager
     1-3 reports : Barely Manager
     4-10 reports : Mostly Manager
@@ -72,6 +104,45 @@
 */
 
 //Code Here
+class ProgressiveManager extends Manager {
+  constructor(first_name, last_name, email, age) {
+    super(first_name, last_name, email, age)
+    this.title = 'Not a manager'
+    this.bonus = 0
+    this.reports = []
+  }
+  
+  hire(employee) {
+    console.log(this.reports.length)
+    this.reports.push(employee)
+    if(this.reports.length === 0){
+      console.log(this.reports.length, 'nam')
+      this.title = 'Not a manager'
+    }
+    else if(this.reports.length > 0 && this.reports.length <= 3){
+      console.log(this.reports.length, 'bm')
+      this.title = 'Barely Manager'
+    }
+    else if(this.reports.length >= 4 && this.reports.length <= 10){
+      console.log(this.reports.length, 'mm')
+      this.title = 'Mostly Manager'
+    }
+    else if(this.reports.length >= 11  && this.reports.length <= 50){
+      this.title = 'Manager'
+    }
+    else if(this.reports.length >=51  && this.reports.length <= 100){
+      this.title = 'Manager Plus'
+    }
+    else if(this.reports.length > 101){
+      this.title = 'Bestest Manager'
+    }
+    return this.reports
+  }
+  fire(index) {
+    this.reports.splice(index, 1)
+    this.bonus += 100
+  }
+}
 
 
 
@@ -99,5 +170,32 @@
 */
 
 //Code Here
+class Machine {
+  constructor() {
+    this.widgets_made_count = 0
+    this.wear_and_tear_count = 0
+    this.needs_reboot = false
 
+  }
+  makeWidgets(num) {
+    this.widgets_made_count += num
+    num /= 50
+    this.wear_and_tear_count += num
+  }
+  fixMachine() {
+    this.needs_reboot = true
+  }
+  reboot() {
+    if(this.needs_reboot){
+        this.needs_reboot = false
+    }
+    
+  }
+}
+let machine = new Machine()
+machine.makeWidgets(10029)
+machine.fixMachine()
+console.log(machine)
+console.log(machine.reboot())
+console.log(machine)
 
